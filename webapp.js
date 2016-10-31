@@ -8,6 +8,11 @@ app.use(express.static('static'));
 
 app.get('/api/dudes', (req, res) =>{
 	db.collection("dude").find().toArray((err, docs) => {
+		console.log("finding timestamp", docs);
+		docs = docs.map((doc) => {
+			console.log(doc._id.getTimestamp());
+			return doc;
+		});
 		res.json(docs);
 	});
 });

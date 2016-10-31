@@ -8,6 +8,7 @@ let DudeAdd= React.createClass({
 				<form name="addDudeForm">
 					<input type="text" name="name" placeholder="Name:" />
 					<input type="text" name="saying" placeholder="Saying:" />
+					<input type="text" name="number" placeholder="Age:" />
 					<button onClick={this.addDudeHandler}>Add Dude</button>
 				</form>
 			</div>
@@ -19,7 +20,9 @@ let DudeAdd= React.createClass({
 		let form = document.forms.addDudeForm;
 		this.props.addDude({
 			name: form.name.value,
-			saying: form.saying.value
+			saying: form.saying.value,
+			age: form.saying.value,
+			created: new Date()
 		});
 	}
 });

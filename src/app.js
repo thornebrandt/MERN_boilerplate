@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-let DudeList = require('./modules/DudeList/');
+let DudeList = require('./modules/DudeList/DudeList');
 
 ReactDOM.render(
 	<DudeList />,

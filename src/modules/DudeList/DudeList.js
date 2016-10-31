@@ -1,16 +1,23 @@
 let React = require('react');
 let DudeAdd = require('./DudeAdd');
+let moment = require('moment');
 
 
 let DudeTable = React.createClass({
 	render(){
 		let dudeRows = this.props.dudes.map((dude) => {
+			dude.created_formatted = new moment(dude.created).fromNow();
 			return <DudeRow key={dude._id} dude={dude} />
 		});
 
 
 		return (
 			<table>
+				<thead>
+					<tr>
+						<th>ID</th><th>Name</th><th>Saying</th><th>Age</th><th>Created</th>
+					</tr>
+				</thead>
 				<tbody>
 					{dudeRows}
 				</tbody>
@@ -26,6 +33,8 @@ let DudeRow = React.createClass({
 				<td>{this.props.dude._id}</td>
 				<td>{this.props.dude.name}</td>
 				<td>{this.props.dude.saying}</td>
+				<td>{this.props.dude.age}</td>
+				<td>{this.props.dude.created_formatted}</td>
 			</tr>
 		)
 	}
