@@ -46,31 +46,58 @@
 
 	'use strict';
 
-	var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(34);
-	var Router = __webpack_require__(172).Router;
-	var Route = __webpack_require__(172).Route;
-	var Redirect = __webpack_require__(172).Redirect;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(34);
+
+	var _reactRouter = __webpack_require__(172);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var DudeList = __webpack_require__(227);
 
-	var NoMatch = React.createClass({
-		displayName: 'NoMatch',
-		render: function render() {
-			return React.createElement(
-				'h2',
-				null,
-				'Sorry, we could not find that page.'
-			);
-		}
-	});
+	var PageNotFound = function (_React$Component) {
+		_inherits(PageNotFound, _React$Component);
 
-	ReactDOM.render(React.createElement(
-		Router,
-		null,
-		React.createElement(Route, { path: '/dudes', component: DudeList }),
-		React.createElement(Redirect, { from: '/', to: '/dudes' }),
-		React.createElement(Route, { path: '*', component: NoMatch })
+		function PageNotFound() {
+			_classCallCheck(this, PageNotFound);
+
+			return _possibleConstructorReturn(this, (PageNotFound.__proto__ || Object.getPrototypeOf(PageNotFound)).apply(this, arguments));
+		}
+
+		_createClass(PageNotFound, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'h1',
+						null,
+						'Sorry, we couldn\'t find that page'
+					)
+				);
+			}
+		}]);
+
+		return PageNotFound;
+	}(_react2.default.Component);
+
+	(0, _reactDom.render)(_react2.default.createElement(
+		_reactRouter.Router,
+		{ history: _reactRouter.browserHistory },
+		_react2.default.createElement(_reactRouter.Route, { path: '/', component: DudeList }),
+		_react2.default.createElement(_reactRouter.Route, { path: '*', component: PageNotFound })
 	), document.getElementById('main'));
 
 /***/ },

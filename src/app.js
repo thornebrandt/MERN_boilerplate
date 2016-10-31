@@ -1,27 +1,25 @@
-let React = require('react');
-let ReactDOM = require('react-dom');
-let Router = require('react-router').Router;
-let Route = require('react-router').Route;
-let Redirect = require('react-router').Redirect;
-
-let DudeList = require('./modules/DudeList/DudeList');
+import React from 'react';
+import { render } from 'react-dom';
+import { browserHistory, Router, Route, Link } from 'react-router'
+const DudeList = require('./modules/DudeList/DudeList');
 
 
-let NoMatch = React.createClass({
-	render(){
+class PageNotFound extends React.Component {
+	render() {
 		return (
-			<h2>Sorry, we could not find that page.</h2>
+			<div>
+				<h1>Sorry, we couldn't find that page</h1>
+			</div>
 		);
 	}
-});
+}
 
 
-ReactDOM.render(
+render(
 	(
-		<Router>
-			<Route path="/dudes" component={DudeList} />
-			<Redirect from="/" to="/dudes" />
-			<Route path="*" component={NoMatch} />
+		<Router history={browserHistory}>
+			<Route path="/" component={ DudeList } />
+			<Route path="*" component={PageNotFound} />
 		</Router>
 	),
 	document.getElementById('main')
