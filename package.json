@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node webapp.js",
-    "watch": "babel --presets react src --watch --out-dir static",
-    "webpack": "./node_modules/.bin/webpack",
+    "babel-watch": "babel --presets react src --watch --out-dir static",
+    "watch": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "mongo": "mkdir mongo-db; mongod --dbpath mongo-db",
     "mongo-win": "md mongo-db & \"C:/Program Files/MongoDb/Server/3.2/bin/mongod.exe\" --dbpath mongo-db"

@@ -18,6 +18,7 @@ module.exports = {
 			}
 		]
 	},
+	watch: true,
 	output: {
 		filename: "app.js",
 		path: path.join(__dirname, 'static')

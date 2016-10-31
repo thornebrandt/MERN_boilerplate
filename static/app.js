@@ -143,7 +143,7 @@
 				_react2.default.createElement(
 					'h1',
 					null,
-					'Dudes'
+					'Dudes '
 				),
 				_react2.default.createElement('hr', null),
 				_react2.default.createElement(DudeTable, { dudes: this.state.dudes }),

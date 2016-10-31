@@ -68,7 +68,7 @@ let DudeList = React.createClass({
 	render(){
 		return (
 			<div>
-				<h1>Dudes</h1>
+				<h1>Dudes </h1>
 				<hr />
 				<DudeTable dudes={this.state.dudes} />
 				<hr />
