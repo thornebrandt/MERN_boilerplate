@@ -1,0 +1,21 @@
+{
+  "name": "MERN_boilerplate",
+  "version": "1.0.0",
+  "private": "true",
+  "description": "Boilerplate for Mongo Express React Node",
+  "main": "index.js",
+  "scripts": {
+    "start": "node webapp.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mongo": "mkdir mongo-db; mongod --dbpath mongo-db",
+    "mongo-win": "md mongo-db & \"C:/Program Files/MongoDb/Server/3.2/bin/mongod.exe\" --dbpath mongo-db"
+  },
+  "author": "Thorne Brandt",
+  "license": "ISC",
+  "dependencies": {
+    "babel-preset-react": "^6.16.0",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongodb": "^2.2.11"
+  }
+}
