@@ -1,5 +1,5 @@
 let DudeTable = React.createClass({
-	render: function(){
+	render: () => {
 		let dudeRows = this.props.dudes.map((dude) => {
 			return <DudeRow key={dude.id} dude={dude} />
 		});
@@ -14,7 +14,7 @@ let DudeTable = React.createClass({
 });
 
 let DudeRow = React.createClass({
-	render: function(){
+	render: () => {
 		return (
 			<tr>
 				<td>{this.props.dude._id}</td>
@@ -27,7 +27,7 @@ let DudeRow = React.createClass({
 
 
 let DudeAdd= React.createClass({
-	render: function(){
+	render: () => {
 		return (
 			<div>
 				<form name="addDudeForm">
@@ -39,7 +39,7 @@ let DudeAdd= React.createClass({
 		)
 	},
 
-	addDudeHandler: function(e){
+	addDudeHandler: (e) => {
 		e.preventDefault();
 		let form = document.forms.addDudeForm;
 		this.props.addDude({
