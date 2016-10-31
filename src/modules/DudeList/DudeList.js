@@ -1,5 +1,6 @@
 let React = require('react');
 let DudeAdd = require('./DudeAdd');
+let DudeFilter = require('./DudeFilter');
 let moment = require('moment');
 
 
@@ -54,6 +55,7 @@ let DudeList = React.createClass({
 			<div>
 				<h1>Dudes </h1>
 				<hr />
+				<DudeFilter submitHandler = { this.loadData } />
 				<DudeTable dudes={this.state.dudes} />
 				<hr />
 				<DudeAdd addDude={this.addDude} />
@@ -62,9 +64,16 @@ let DudeList = React.createClass({
 	},
 
 	componentDidMount(){
-		$.ajax('/api/dudes').done(function(data){
-			this.setState({dudes: data});
-		}.bind(this));
+		// $.ajax('/api/dudes').done(function(data){
+		// 	this.setState({dudes: data});
+		// }.bind(this));
+		this.loadData({});
+	},
+
+	loadData: function(filter){
+		$.ajax('/api/dudes', { data: filter }).done((data) => {
+			this.setState({ dudes:  data });
+		});
 	},
 
 	addDude(dude){

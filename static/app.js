@@ -21483,6 +21483,7 @@
 
 	var React = __webpack_require__(1);
 	var DudeAdd = __webpack_require__(173);
+	var DudeFilter = __webpack_require__(282);
 	var moment = __webpack_require__(175);
 
 	var DudeTable = React.createClass({
@@ -21590,16 +21591,28 @@
 					'Dudes '
 				),
 				React.createElement('hr', null),
+				React.createElement(DudeFilter, { submitHandler: this.loadData }),
 				React.createElement(DudeTable, { dudes: this.state.dudes }),
 				React.createElement('hr', null),
 				React.createElement(DudeAdd, { addDude: this.addDude })
 			);
 		},
 		componentDidMount: function componentDidMount() {
-			$.ajax('/api/dudes').done(function (data) {
-				this.setState({ dudes: data });
-			}.bind(this));
+			// $.ajax('/api/dudes').done(function(data){
+			// 	this.setState({dudes: data});
+			// }.bind(this));
+			this.loadData({});
 		},
+
+
+		loadData: function loadData(filter) {
+			var _this = this;
+
+			$.ajax('/api/dudes', { data: filter }).done(function (data) {
+				_this.setState({ dudes: data });
+			});
+		},
+
 		addDude: function addDude(dude) {
 			$.ajax({
 				type: 'POST',
@@ -36032,6 +36045,92 @@
 	    return zh_tw;
 
 	}));
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var reactDOM = __webpack_require__(34);
+
+	var DudeFilter = React.createClass({
+		displayName: 'DudeFilter',
+		render: function render() {
+			return React.createElement(
+				'div',
+				null,
+				'Age Cutoff:',
+				React.createElement(
+					'select',
+					{ value: this.state.age, onChange: this.onChangeAge },
+					React.createElement(
+						'option',
+						{ value: '' },
+						'Any'
+					),
+					React.createElement(
+						'option',
+						{ value: '16' },
+						'16'
+					),
+					React.createElement(
+						'option',
+						{ value: '17' },
+						'17'
+					),
+					React.createElement(
+						'option',
+						{ value: '18' },
+						'18'
+					),
+					React.createElement(
+						'option',
+						{ value: '21' },
+						'21'
+					),
+					React.createElement(
+						'option',
+						{ value: '35' },
+						'35'
+					)
+				),
+				'Name: ',
+				React.createElement('input', { value: this.state.name, onChange: this.onChangeName }),
+				React.createElement('br', null),
+				React.createElement(
+					'button',
+					{ onClick: this.submit },
+					'Apply'
+				)
+			);
+		},
+
+
+		getInitialState: function getInitialState() {
+			return { age: "", name: "" };
+		},
+
+		onChangeAge: function onChangeAge(e) {
+			console.log("change age");
+			this.setState({ age: e.target.value });
+		},
+
+		onChangeName: function onChangeName(e) {
+			this.setState({ name: e.target.value });
+		},
+
+		filterHandler: function filterHandler(e) {
+			this.props.submitHandler({ age: 21 });
+		},
+
+		submit: function submit(e) {
+			this.props.submitHandler({ age: this.state.age, name: this.state.name });
+		}
+	});
+
+	module.exports = DudeFilter;
 
 /***/ }
 /******/ ]);

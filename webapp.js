@@ -7,12 +7,15 @@ let server;
 app.use(express.static('static'));
 
 app.get('/api/dudes', (req, res) =>{
-	db.collection("dude").find().toArray((err, docs) => {
-		console.log("finding timestamp", docs);
-		docs = docs.map((doc) => {
-			console.log(doc._id.getTimestamp());
-			return doc;
-		});
+	let filter = {};
+	if(req.query.age){
+		filter.age = { $gte: parseInt(req.query.age) };
+	}
+	if(req.query.name){
+		let reg = /.*/;
+		filter.name = new RegExp(reg.source + req.query.name + reg.source, 'i');
+	}
+	db.collection("dude").find(filter).toArray((err, docs) => {
 		res.json(docs);
 	});
 });
