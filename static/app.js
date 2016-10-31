@@ -56,123 +56,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var DudeTable = _react2.default.createClass({
-		displayName: 'DudeTable',
-		render: function render() {
-			var dudeRows = this.props.dudes.map(function (dude) {
-				return _react2.default.createElement(DudeRow, { key: dude._id, dude: dude });
-			});
-
-			return _react2.default.createElement(
-				'table',
-				null,
-				_react2.default.createElement(
-					'tbody',
-					null,
-					dudeRows
-				)
-			);
-		}
-	});
-
-	var DudeRow = _react2.default.createClass({
-		displayName: 'DudeRow',
-		render: function render() {
-			return _react2.default.createElement(
-				'tr',
-				null,
-				_react2.default.createElement(
-					'td',
-					null,
-					this.props.dude._id
-				),
-				_react2.default.createElement(
-					'td',
-					null,
-					this.props.dude.name
-				),
-				_react2.default.createElement(
-					'td',
-					null,
-					this.props.dude.saying
-				)
-			);
-		}
-	});
-
-	var DudeAdd = _react2.default.createClass({
-		displayName: 'DudeAdd',
-		render: function render() {
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'form',
-					{ name: 'addDudeForm' },
-					_react2.default.createElement('input', { type: 'text', name: 'name', placeholder: 'Name:' }),
-					_react2.default.createElement('input', { type: 'text', name: 'saying', placeholder: 'Saying:' }),
-					_react2.default.createElement(
-						'button',
-						{ onClick: this.addDudeHandler },
-						'Add Dude'
-					)
-				)
-			);
-		},
-		addDudeHandler: function addDudeHandler(e) {
-			e.preventDefault();
-			var form = document.forms.addDudeForm;
-			this.props.addDude({
-				name: form.name.value,
-				saying: form.saying.value
-			});
-		}
-	});
-
-	var DudeList = _react2.default.createClass({
-		displayName: 'DudeList',
-		getInitialState: function getInitialState() {
-			return {
-				dudes: []
-			};
-		},
-		render: function render() {
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'h1',
-					null,
-					'Dudes '
-				),
-				_react2.default.createElement('hr', null),
-				_react2.default.createElement(DudeTable, { dudes: this.state.dudes }),
-				_react2.default.createElement('hr', null),
-				_react2.default.createElement(DudeAdd, { addDude: this.addDude })
-			);
-		},
-		componentDidMount: function componentDidMount() {
-			$.ajax('/api/dudes').done(function (data) {
-				this.setState({ dudes: data });
-			}.bind(this));
-		},
-		addDude: function addDude(dude) {
-			$.ajax({
-				type: 'POST',
-				url: '/api/dudes',
-				contentType: 'application/json',
-				data: JSON.stringify(dude),
-				success: function (data) {
-					var dude = data;
-					var dudesModified = this.state.dudes.concat(dude);
-					this.setState({ dudes: dudesModified });
-				}.bind(this),
-				error: function error(xhr, status, err) {
-					console.log("Error adding dude:", err);
-				}
-			});
-		}
-	});
+	var DudeList = __webpack_require__(172);
 
 	_reactDom2.default.render(_react2.default.createElement(DudeList, null), document.getElementById('main'));
 
@@ -21542,6 +21426,150 @@
 
 	module.exports = ReactDOMNullInputValuePropHook;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ },
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var DudeAdd = __webpack_require__(173);
+
+	var DudeTable = React.createClass({
+		displayName: 'DudeTable',
+		render: function render() {
+			var dudeRows = this.props.dudes.map(function (dude) {
+				return React.createElement(DudeRow, { key: dude._id, dude: dude });
+			});
+
+			return React.createElement(
+				'table',
+				null,
+				React.createElement(
+					'tbody',
+					null,
+					dudeRows
+				)
+			);
+		}
+	});
+
+	var DudeRow = React.createClass({
+		displayName: 'DudeRow',
+		render: function render() {
+			return React.createElement(
+				'tr',
+				null,
+				React.createElement(
+					'td',
+					null,
+					this.props.dude._id
+				),
+				React.createElement(
+					'td',
+					null,
+					this.props.dude.name
+				),
+				React.createElement(
+					'td',
+					null,
+					this.props.dude.saying
+				)
+			);
+		}
+	});
+
+	var DudeList = React.createClass({
+		displayName: 'DudeList',
+		getInitialState: function getInitialState() {
+			return {
+				dudes: []
+			};
+		},
+		render: function render() {
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(
+					'h1',
+					null,
+					'Dudes '
+				),
+				React.createElement('hr', null),
+				React.createElement(DudeTable, { dudes: this.state.dudes }),
+				React.createElement('hr', null),
+				React.createElement(DudeAdd, { addDude: this.addDude })
+			);
+		},
+		componentDidMount: function componentDidMount() {
+			$.ajax('/api/dudes').done(function (data) {
+				this.setState({ dudes: data });
+			}.bind(this));
+		},
+		addDude: function addDude(dude) {
+			$.ajax({
+				type: 'POST',
+				url: '/api/dudes',
+				contentType: 'application/json',
+				data: JSON.stringify(dude),
+				success: function (data) {
+					var dude = data;
+					var dudesModified = this.state.dudes.concat(dude);
+					this.setState({ dudes: dudesModified });
+				}.bind(this),
+				error: function error(xhr, status, err) {
+					console.log("Error adding dude:", err);
+				}
+			});
+		}
+	});
+
+	module.exports = DudeList;
+
+/***/ },
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var DudeAdd = React.createClass({
+		displayName: "DudeAdd",
+		render: function render() {
+			return React.createElement(
+				"div",
+				null,
+				React.createElement(
+					"h3",
+					null,
+					"Dude Add"
+				),
+				React.createElement(
+					"form",
+					{ name: "addDudeForm" },
+					React.createElement("input", { type: "text", name: "name", placeholder: "Name:" }),
+					React.createElement("input", { type: "text", name: "saying", placeholder: "Saying:" }),
+					React.createElement(
+						"button",
+						{ onClick: this.addDudeHandler },
+						"Add Dude"
+					)
+				)
+			);
+		},
+		addDudeHandler: function addDudeHandler(e) {
+			e.preventDefault();
+			var form = document.forms.addDudeForm;
+			this.props.addDude({
+				name: form.name.value,
+				saying: form.saying.value
+			});
+		}
+	});
+
+	module.exports = DudeAdd;
 
 /***/ }
 /******/ ]);
