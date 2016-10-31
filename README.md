@@ -12,6 +12,6 @@
 ## Development
 
 1. Install babel-cli globally with `npm install -g babel-cli`
-2. To compile and watch files: `babel --presets react src --watch --out-dir static`
+2. To watch files and compile them with babel: `npm run watch`
 
 Email thornebrandt@gmail.com with any problems, questions, feedback.

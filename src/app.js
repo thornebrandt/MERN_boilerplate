@@ -1,5 +1,5 @@
 let DudeTable = React.createClass({
-	render: () => {
+	render(){
 		let dudeRows = this.props.dudes.map((dude) => {
 			return <DudeRow key={dude.id} dude={dude} />
 		});
@@ -14,7 +14,7 @@ let DudeTable = React.createClass({
 });
 
 let DudeRow = React.createClass({
-	render: () => {
+	render(){
 		return (
 			<tr>
 				<td>{this.props.dude._id}</td>
@@ -27,7 +27,7 @@ let DudeRow = React.createClass({
 
 
 let DudeAdd= React.createClass({
-	render: () => {
+	render(){
 		return (
 			<div>
 				<form name="addDudeForm">
@@ -39,7 +39,7 @@ let DudeAdd= React.createClass({
 		)
 	},
 
-	addDudeHandler: (e) => {
+	addDudeHandler(e){
 		e.preventDefault();
 		let form = document.forms.addDudeForm;
 		this.props.addDude({
@@ -52,15 +52,14 @@ let DudeAdd= React.createClass({
 
 
 let DudeList = React.createClass({
-	getInitialState: function(){
-		console.log("getting initial state");
+	getInitialState(){
 		return {
 			dudes: []
 		}
 	},
 
 
-	render: function(){
+	render(){
 		return (
 			<div>
 				<h1>Dudes</h1>
@@ -72,13 +71,13 @@ let DudeList = React.createClass({
 		)
 	},
 
-	componentDidMount: function(){
+	componentDidMount(){
 		$.ajax('/api/dudes').done(function(data){
 			this.setState({dudes: data});
 		}.bind(this));
 	},
 
-	addDude: function(dude){
+	addDude(dude){
 		$.ajax({
 			type: 'POST',
 			url: '/api/dudes',

@@ -1,7 +1,7 @@
 let DudeTable = React.createClass({
 	displayName: "DudeTable",
 
-	render: function () {
+	render() {
 		let dudeRows = this.props.dudes.map(dude => {
 			return React.createElement(DudeRow, { key: dude.id, dude: dude });
 		});
@@ -17,7 +17,7 @@ let DudeTable = React.createClass({
 let DudeRow = React.createClass({
 	displayName: "DudeRow",
 
-	render: function () {
+	render() {
 		return React.createElement(
 			"tr",
 			null,
@@ -43,7 +43,7 @@ let DudeRow = React.createClass({
 let DudeAdd = React.createClass({
 	displayName: "DudeAdd",
 
-	render: function () {
+	render() {
 		return React.createElement(
 			"div",
 			null,
@@ -61,7 +61,7 @@ let DudeAdd = React.createClass({
 		);
 	},
 
-	addDudeHandler: function (e) {
+	addDudeHandler(e) {
 		e.preventDefault();
 		let form = document.forms.addDudeForm;
 		this.props.addDude({
@@ -75,14 +75,13 @@ let DudeAdd = React.createClass({
 let DudeList = React.createClass({
 	displayName: "DudeList",
 
-	getInitialState: function () {
-		console.log("getting initial state");
+	getInitialState() {
 		return {
 			dudes: []
 		};
 	},
 
-	render: function () {
+	render() {
 		return React.createElement(
 			"div",
 			null,
@@ -98,13 +97,13 @@ let DudeList = React.createClass({
 		);
 	},
 
-	componentDidMount: function () {
+	componentDidMount() {
 		$.ajax('/api/dudes').done(function (data) {
 			this.setState({ dudes: data });
 		}.bind(this));
 	},
 
-	addDude: function (dude) {
+	addDude(dude) {
 		$.ajax({
 			type: 'POST',
 			url: '/api/dudes',
