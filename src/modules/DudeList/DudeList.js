@@ -1,4 +1,5 @@
 let React = require('react');
+let ReactDOM = require('react-dom');
 let DudeAdd = require('./DudeAdd');
 let DudeFilter = require('./DudeFilter');
 let moment = require('moment');
