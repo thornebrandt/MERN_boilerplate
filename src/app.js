@@ -1,13 +1,19 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+
 let DudeTable = React.createClass({
 	render(){
 		let dudeRows = this.props.dudes.map((dude) => {
-			return <DudeRow key={dude.id} dude={dude} />
+			return <DudeRow key={dude._id} dude={dude} />
 		});
 
 
 		return (
 			<table>
-				{dudeRows}
+				<tbody>
+					{dudeRows}
+				</tbody>
 			</table>
 		)
 	}
