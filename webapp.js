@@ -19,6 +19,11 @@ app.get('/api/dudes', (req, res) =>{
 		res.json(docs);
 	});
 });
+
+app.get('*', (req, res) => {
+	res.sendfile('./static/index.html');
+});
+
 app.use(bodyParser.json());
 app.post('/api/dudes', (req, res) => {
 	let newDude = req.body;

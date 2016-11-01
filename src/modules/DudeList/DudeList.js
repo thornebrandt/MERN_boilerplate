@@ -1,9 +1,9 @@
+import 'whatwg-fetch';
 let React = require('react');
 let ReactDOM = require('react-dom');
+let moment = require('moment');
 let DudeAdd = require('./DudeAdd');
 let DudeFilter = require('./DudeFilter');
-let moment = require('moment');
-
 
 let DudeTable = React.createClass({
 	render(){
@@ -56,7 +56,7 @@ let DudeList = React.createClass({
 			<div>
 				<h1>Dudes </h1>
 				<hr />
-				<DudeFilter submitHandler = { this.loadData } />
+				<DudeFilter submitHandler = { this.changeFilter } />
 				<DudeTable dudes={this.state.dudes} />
 				<hr />
 				<DudeAdd addDude={this.addDude} />
@@ -65,32 +65,44 @@ let DudeList = React.createClass({
 	},
 
 	componentDidMount(){
-		// $.ajax('/api/dudes').done(function(data){
-		// 	this.setState({dudes: data});
-		// }.bind(this));
 		this.loadData({});
 	},
 
+	changeFilter: function(newFilter){
+		this.props.router.push({
+			pathname: '/dudes',
+			query: newFilter
+		});
+		this.loadData(newFilter);
+	},
+
 	loadData: function(filter){
-		$.ajax('/api/dudes', { data: filter }).done((data) => {
-			this.setState({ dudes:  data });
+		return fetch('/api/dudes', { data: filter })
+		.then((response) => response.json())
+		.then((data) => {
+			this.setState({ dudes: data });
+		})
+		.catch((error) => {
+			console.log("error fetching ", error);
 		});
 	},
 
 	addDude(dude){
-		$.ajax({
-			type: 'POST',
-			url: '/api/dudes',
-			contentType: 'application/json',
-			data: JSON.stringify(dude),
-			success: function(data){
-				let dude = data;
-				let dudesModified = this.state.dudes.concat(dude);
-				this.setState({dudes: dudesModified});
-			}.bind(this),
-			error: function(xhr, status, err){
-				console.log("Error adding dude:", err);
-			}
+		return fetch('/api/dudes', {
+			method: 'POST',
+			body: JSON.stringify(dude),
+			mode: 'cors',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			})
+		}).then((response) => response.json())
+		.then((data) => {
+			let dude = data;
+			let dudesModified = this.state.dudes.concat(dude);
+			this.setState({dudes: dudesModified});
+		})
+		.catch((error) => {
+			console.log("error posting ", error);
 		});
 	}
 });

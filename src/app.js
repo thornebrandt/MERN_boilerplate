@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { browserHistory, Router, Route, Link } from 'react-router'
+import { browserHistory, Redirect, Router, Route, Link } from 'react-router'
 const DudeList = require('./modules/DudeList/DudeList');
 
 
@@ -18,7 +18,8 @@ class PageNotFound extends React.Component {
 render(
 	(
 		<Router history={browserHistory}>
-			<Route path="/" component={ DudeList } />
+			<Route path="/dudes" component={DudeList} />
+			<Redirect from="/" to="/dudes" />
 			<Route path="*" component={PageNotFound} />
 		</Router>
 	),
