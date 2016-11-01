@@ -73,8 +73,6 @@ let DudeList = React.createClass({
 		if(prevProps.location.search == this.props.location.search){
 			return;
 		} else {
-			console.log(prevProps.location.search);
-			console.log(this.props.location.search);
 			this.loadData();
 		}
 	},

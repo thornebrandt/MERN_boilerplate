@@ -65,6 +65,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var DudeList = __webpack_require__(227);
+	var Dude = __webpack_require__(421);
 
 	var PageNotFound = function (_React$Component) {
 		_inherits(PageNotFound, _React$Component);
@@ -97,6 +98,7 @@
 		_reactRouter.Router,
 		{ history: _reactRouter.browserHistory },
 		_react2.default.createElement(_reactRouter.Route, { path: '/dudes', component: DudeList }),
+		_react2.default.createElement(_reactRouter.Route, { path: '/dude/:name', component: Dude }),
 		_react2.default.createElement(_reactRouter.Redirect, { from: '/', to: '/dudes' }),
 		_react2.default.createElement(_reactRouter.Route, { path: '*', component: PageNotFound })
 	), document.getElementById('main'));
@@ -26508,8 +26510,6 @@
 			if (prevProps.location.search == this.props.location.search) {
 				return;
 			} else {
-				console.log(prevProps.location.search);
-				console.log(this.props.location.search);
 				this.loadData();
 			}
 		},
@@ -41793,6 +41793,100 @@
 	  self.fetch.polyfill = true
 	})(typeof self !== 'undefined' ? self : this);
 
+
+/***/ },
+/* 421 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	__webpack_require__(420);
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(34);
+	var DudeTable = React.createClass({
+		displayName: 'DudeTable',
+		render: function render() {
+			var dudeContent = void 0;
+			var foundDude = this.state.foundDude;
+			var name = this.props.params.name;
+			if (this.state.loaded) {
+				dudeContent = React.createElement(
+					'div',
+					null,
+					foundDude && React.createElement(FoundDude, { dude: this.state.dude }),
+					!foundDude && React.createElement(EmptyDude, { name: name })
+				);
+			} else {
+				dudeContent = React.createElement(
+					'div',
+					null,
+					'Loading...'
+				);
+			}
+			return React.createElement(
+				'div',
+				null,
+				dudeContent
+			);
+		},
+		getInitialState: function getInitialState() {
+			return {
+				loaded: false
+			};
+		},
+		componentDidMount: function componentDidMount() {
+			this.loadData();
+		},
+
+
+		loadData: function loadData() {
+			var _this = this;
+
+			return fetch('/api/dudes/' + this.props.params.name).then(function (response) {
+				return response.json();
+			}).then(function (data) {
+				var state = {
+					loaded: true
+				};
+				if (data) {
+					state.dude = data;
+					state.foundDude = true;
+				} else {
+					state.foundDude = false;
+				}
+				_this.setState(state);
+			}).catch(function (error) {
+				console.log("can't find dude", error);
+			});
+		}
+	});
+
+	var FoundDude = React.createClass({
+		displayName: 'FoundDude',
+		render: function render() {
+			return React.createElement(
+				'div',
+				null,
+				'We found the dude ',
+				this.props.dude.name
+			);
+		}
+	});
+
+	var EmptyDude = React.createClass({
+		displayName: 'EmptyDude',
+		render: function render() {
+			return React.createElement(
+				'div',
+				null,
+				'Sorry, we couldn\'t find that dude ',
+				this.props.name
+			);
+		}
+	});
+
+	module.exports = DudeTable;
 
 /***/ }
 /******/ ]);

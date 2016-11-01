@@ -1,11 +1,14 @@
 let express = require('express');
-let bodyParser = require('body-parser');
-let MongoClient = require('mongodb').MongoClient;
+const bodyParser = require('body-parser');
+const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
+
 let app = express();
 let db;
 let server;
 app.use(express.static('static'));
 
+/*get all dudes*/
 app.get('/api/dudes', (req, res) =>{
 	let filter = {};
 	if(req.query.age){
@@ -20,11 +23,34 @@ app.get('/api/dudes', (req, res) =>{
 	});
 });
 
+/*get one dude*/
+app.get('/api/dudes/:name', (req, res) => {
+	var regex = new RegExp(["^", req.params.name, "$"].join(""), "i");
+	db.collection("dude").findOne({ name: regex }, (err, dude) => {
+		res.json(dude);
+	});
+});
+
 app.get('*', (req, res) => {
 	res.sendfile('./static/index.html');
 });
 
 app.use(bodyParser.json());
+
+
+/*Modify one dude */
+app.put('/api/dudes/:id', (req, res) =>{
+	let dude = req.body;
+	console.log("Modifying dude:", req.params.id, dude);
+	let oid = ObjectId(req.params.id);
+	db.collection("dude").updateOne({_id: oid}, dude, (err, result) =>{
+		db.collection("dude").find({_id: oid}).next((err, doc) => {
+			res.send(doc);
+		});
+	});
+});
+
+
 app.post('/api/dudes', (req, res) => {
 	let newDude = req.body;
 	db.collection("dude").insertOne(newDude, (err, result) => {
