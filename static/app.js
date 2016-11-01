@@ -26385,6 +26385,7 @@
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(34);
+	var Link = __webpack_require__(172).Link;
 	var moment = __webpack_require__(228);
 	var querystring = __webpack_require__(366);
 	var DudeAdd = __webpack_require__(418);
@@ -26446,33 +26447,38 @@
 	var DudeRow = React.createClass({
 		displayName: 'DudeRow',
 		render: function render() {
+			var dude = this.props.dude;
 			return React.createElement(
 				'tr',
 				null,
 				React.createElement(
 					'td',
 					null,
-					this.props.dude._id
+					dude._id
 				),
 				React.createElement(
 					'td',
 					null,
-					this.props.dude.name
+					React.createElement(
+						Link,
+						{ to: '/dude/' + dude.name },
+						dude.name
+					)
 				),
 				React.createElement(
 					'td',
 					null,
-					this.props.dude.saying
+					dude.saying
 				),
 				React.createElement(
 					'td',
 					null,
-					this.props.dude.age
+					dude.age
 				),
 				React.createElement(
 					'td',
 					null,
-					this.props.dude.created_formatted
+					dude.created_formatted
 				)
 			);
 		}

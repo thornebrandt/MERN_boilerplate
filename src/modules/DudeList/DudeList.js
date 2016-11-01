@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 const React = require('react');
 const ReactDOM = require('react-dom');
+const Link = require('react-router').Link;
 const moment = require('moment');
 const querystring = require('querystring')
 let DudeAdd = require('./DudeAdd');
@@ -31,13 +32,18 @@ let DudeTable = React.createClass({
 
 let DudeRow = React.createClass({
 	render(){
+		let dude = this.props.dude;
 		return (
 			<tr>
-				<td>{this.props.dude._id}</td>
-				<td>{this.props.dude.name}</td>
-				<td>{this.props.dude.saying}</td>
-				<td>{this.props.dude.age}</td>
-				<td>{this.props.dude.created_formatted}</td>
+				<td>{dude._id}</td>
+				<td>
+					<Link to={`/dude/${dude.name}`}>
+						{dude.name}
+					</Link>
+				</td>
+				<td>{dude.saying}</td>
+				<td>{dude.age}</td>
+				<td>{dude.created_formatted}</td>
 			</tr>
 		)
 	}
