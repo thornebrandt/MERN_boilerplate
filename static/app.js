@@ -26504,19 +26504,29 @@
 		},
 
 
+		componentDidUpdate: function componentDidUpdate(prevProps) {
+			console.log("did update");
+			if (prevProps.location.search == this.props.location.search) {
+				return;
+			} else {
+				console.log(prevProps.location.search);
+				console.log(this.props.location.search);
+				this.loadData();
+			}
+		},
+
 		changeFilter: function changeFilter(newFilter) {
 			this.props.router.push({
 				pathname: '/dudes',
 				query: newFilter
 			});
-			this.loadData();
 		},
 
 		loadData: function loadData() {
 			var _this = this;
 
-			var query = querystring.stringify(this.props.location.query);
-			return fetch('/api/dudes?' + query).then(function (response) {
+			var query = this.props.location.search;
+			return fetch('/api/dudes' + query).then(function (response) {
 				return response.json();
 			}).then(function (data) {
 				_this.setState({ dudes: data });

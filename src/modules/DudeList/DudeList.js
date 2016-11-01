@@ -69,17 +69,27 @@ let DudeList = React.createClass({
 		this.loadData({});
 	},
 
+	componentDidUpdate: function(prevProps){
+		console.log("did update");
+		if(prevProps.location.search == this.props.location.search){
+			return;
+		} else {
+			console.log(prevProps.location.search);
+			console.log(this.props.location.search);
+			this.loadData();
+		}
+	},
+
 	changeFilter: function(newFilter){
 		this.props.router.push({
 			pathname: '/dudes',
 			query: newFilter
 		});
-		this.loadData();
 	},
 
 	loadData: function(){
-		let query = querystring.stringify(this.props.location.query);
-		return fetch('/api/dudes?' + query)
+		let query = this.props.location.search;
+		return fetch('/api/dudes' + query)
 		.then((response) => response.json())
 		.then((data) => {
 			this.setState({ dudes: data });
