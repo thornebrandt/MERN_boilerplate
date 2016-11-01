@@ -2,6 +2,8 @@ import 'whatwg-fetch';
 const React = require('react');
 const ReactDOM = require('react-dom');
 const PostList = require('../Post/PostList');
+const PostAdd = require('../Post/PostAdd');
+
 let Dude = React.createClass({
 	render(){
 		let dudeContent;
@@ -10,7 +12,7 @@ let Dude = React.createClass({
 		if(this.state.loaded){
 			dudeContent = (
 				<div>
-					{foundDude && <FoundDude dude={this.state.dude} />}
+					{foundDude && <FoundDude dude={this.state.dude} addPost={this.addPost} />}
 					{!foundDude && <EmptyDude name={name} />}
 				</div>
 			);
@@ -30,7 +32,8 @@ let Dude = React.createClass({
 
 	getInitialState(){
 		return {
-			loaded: false
+			loaded: false,
+			posts: []
 		}
 	},
 
@@ -56,7 +59,29 @@ let Dude = React.createClass({
 		.catch((error) => {
 			console.log("can't find dude", error);
 		});
+	},
+
+	addPost(post){
+		return fetch('/api/posts', {
+			method: 'POST',
+			body: JSON.stringify(post),
+			mode: 'cors',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			})
+		}).then((response) => response.json())
+		.then((data) => {
+			let post = data;
+			let postsModified = this.state.posts.concat(post);
+			let dude = this.state.dude;
+			dude.posts = postsModified;
+			this.setState({dude});
+		})
+		.catch((error) => {
+			console.log("error posting ", error);
+		});
 	}
+
 });
 
 let FoundDude = React.createClass({
@@ -68,7 +93,9 @@ let FoundDude = React.createClass({
 				<h2>{this.props.dude.saying}</h2>
 				<hr />
 				<h2>Posts:</h2>
-				<PostList />
+				<PostList dude={this.props.dude} />
+				<hr />
+				<PostAdd dude={this.props.dude} addPost={this.props.addPost} />
 			</div>
 		);
 	}

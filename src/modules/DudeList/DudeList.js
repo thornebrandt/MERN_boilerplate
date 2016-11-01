@@ -72,7 +72,7 @@ let DudeList = React.createClass({
 	},
 
 	componentDidMount(){
-		this.loadData({});
+		this.loadData();
 	},
 
 	componentDidUpdate: function(prevProps){
