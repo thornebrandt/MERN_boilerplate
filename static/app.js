@@ -41810,8 +41810,9 @@
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(34);
-	var DudeTable = React.createClass({
-		displayName: 'DudeTable',
+	var PostList = __webpack_require__(422);
+	var Dude = React.createClass({
+		displayName: 'Dude',
 		render: function render() {
 			var dudeContent = void 0;
 			var foundDude = this.state.foundDude;
@@ -41874,8 +41875,25 @@
 			return React.createElement(
 				'div',
 				null,
-				'We found the dude ',
-				this.props.dude.name
+				'We found the dude: ',
+				this.props.dude.name,
+				React.createElement(
+					'h1',
+					null,
+					this.props.dude.name
+				),
+				React.createElement(
+					'h2',
+					null,
+					this.props.dude.saying
+				),
+				React.createElement('hr', null),
+				React.createElement(
+					'h2',
+					null,
+					'Posts:'
+				),
+				React.createElement(PostList, null)
 			);
 		}
 	});
@@ -41892,7 +41910,29 @@
 		}
 	});
 
-	module.exports = DudeTable;
+	module.exports = Dude;
+
+/***/ },
+/* 422 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	__webpack_require__(420);
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(34);
+	var Post = React.createClass({
+		displayName: 'Post',
+		render: function render() {
+			return React.createElement(
+				'div',
+				null,
+				'Post List here'
+			);
+		}
+	});
+	module.exports = Post;
 
 /***/ }
 /******/ ]);

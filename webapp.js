@@ -7,6 +7,8 @@ let app = express();
 let db;
 let server;
 app.use(express.static('static'));
+app.use(bodyParser.json());
+
 
 /*get all dudes*/
 app.get('/api/dudes', (req, res) =>{
@@ -23,25 +25,36 @@ app.get('/api/dudes', (req, res) =>{
 	});
 });
 
-/*get one dude*/
-app.get('/api/dudes/:name', (req, res) => {
-	var regex = new RegExp(["^", req.params.name, "$"].join(""), "i");
-	db.collection("dude").findOne({ name: regex }, (err, dude) => {
-		res.json(dude);
+/*Get all posts made by dude*/
+app.get('/api/posts/:dude_id', (req, res) => {
+	let dude_id = req.params.dude_id;
+	db.collection("post").find({dude_id : req.params.dude_id}).toArray((err, docs) => {
+		res.json(docs);
 	});
 });
 
-app.get('*', (req, res) => {
-	res.sendfile('./static/index.html');
+/*Create post*/
+app.post('/api/posts', (req, res) => {
+	let newPost = req.body;
+	db.collection("post").insertOne(newPost, (err, result) => {
+		let newID = result.insertedId;
+		db.collection("post").find({_id: newID}).next((err, doc) => {
+			res.json(doc);
+		});
+	});
 });
 
-app.use(bodyParser.json());
-
+/*get one dude*/
+app.get('/api/dudes/:name', (req, res) => {
+	var regex = new RegExp(["^", req.params.name, "$"].join(""), "i");
+	db.collection("dude").findOne({ name: regex }, (err, doc) => {
+		res.json(doc);
+	});
+});
 
 /*Modify one dude */
 app.put('/api/dudes/:id', (req, res) =>{
 	let dude = req.body;
-	console.log("Modifying dude:", req.params.id, dude);
 	let oid = ObjectId(req.params.id);
 	db.collection("dude").updateOne({_id: oid}, dude, (err, result) =>{
 		db.collection("dude").find({_id: oid}).next((err, doc) => {
@@ -50,7 +63,7 @@ app.put('/api/dudes/:id', (req, res) =>{
 	});
 });
 
-
+/*Create a dude*/
 app.post('/api/dudes', (req, res) => {
 	let newDude = req.body;
 	db.collection("dude").insertOne(newDude, (err, result) => {
@@ -60,6 +73,12 @@ app.post('/api/dudes', (req, res) => {
 		});
 	});
 });
+
+/*PushState*/
+app.get('*', (req, res) => {
+	res.sendfile('./static/index.html');
+});
+
 MongoClient.connect('mongodb://localhost/dudes', (err, dbConnection) => {
 	db = dbConnection;
 	server = app.listen(3000, () =>{

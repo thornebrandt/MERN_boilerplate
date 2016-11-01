@@ -1,7 +1,8 @@
 import 'whatwg-fetch';
 const React = require('react');
 const ReactDOM = require('react-dom');
-let DudeTable = React.createClass({
+const PostList = require('../Post/PostList');
+let Dude = React.createClass({
 	render(){
 		let dudeContent;
 		let foundDude = this.state.foundDude;
@@ -62,7 +63,12 @@ let FoundDude = React.createClass({
 	render(){
 		return(
 			<div>
-				We found the dude { this.props.dude.name }
+				We found the dude: { this.props.dude.name }
+				<h1>{this.props.dude.name}</h1>
+				<h2>{this.props.dude.saying}</h2>
+				<hr />
+				<h2>Posts:</h2>
+				<PostList />
 			</div>
 		);
 	}
@@ -80,4 +86,4 @@ let EmptyDude = React.createClass({
 });
 
 
-module.exports = DudeTable;
+module.exports = Dude;
