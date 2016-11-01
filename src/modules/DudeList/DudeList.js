@@ -74,13 +74,12 @@ let DudeList = React.createClass({
 			pathname: '/dudes',
 			query: newFilter
 		});
-		this.loadData(newFilter);
+		this.loadData();
 	},
 
-	loadData: function(filter){
-		let query = this.props.location.query;
-		let queryString = querystring.stringify(query);
-		return fetch('/api/dudes?' + queryString, { data: filter })
+	loadData: function(){
+		let query = querystring.stringify(this.props.location.query);
+		return fetch('/api/dudes?' + query)
 		.then((response) => response.json())
 		.then((data) => {
 			this.setState({ dudes: data });

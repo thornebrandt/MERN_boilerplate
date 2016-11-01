@@ -26509,15 +26509,14 @@
 				pathname: '/dudes',
 				query: newFilter
 			});
-			this.loadData(newFilter);
+			this.loadData();
 		},
 
-		loadData: function loadData(filter) {
+		loadData: function loadData() {
 			var _this = this;
 
-			var query = this.props.location.query;
-			var queryString = querystring.stringify(query);
-			return fetch('/api/dudes?' + queryString, { data: filter }).then(function (response) {
+			var query = querystring.stringify(this.props.location.query);
+			return fetch('/api/dudes?' + query).then(function (response) {
 				return response.json();
 			}).then(function (data) {
 				_this.setState({ dudes: data });
