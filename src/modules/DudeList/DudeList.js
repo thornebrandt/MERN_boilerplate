@@ -57,7 +57,7 @@ let DudeList = React.createClass({
 			<div>
 				<h1>Dudes </h1>
 				<hr />
-				<DudeFilter submitHandler = { this.changeFilter } />
+				<DudeFilter submitHandler = { this.changeFilter } initFilter={this.props.location.query} />
 				<DudeTable dudes={this.state.dudes} />
 				<hr />
 				<DudeAdd addDude={this.addDude} />
@@ -70,7 +70,6 @@ let DudeList = React.createClass({
 	},
 
 	componentDidUpdate: function(prevProps){
-		console.log("did update");
 		if(prevProps.location.search == this.props.location.search){
 			return;
 		} else {

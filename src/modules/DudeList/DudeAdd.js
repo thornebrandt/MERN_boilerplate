@@ -21,7 +21,7 @@ let DudeAdd= React.createClass({
 		this.props.addDude({
 			name: form.name.value,
 			saying: form.saying.value,
-			age: form.age.value,
+			age: parseInt(form.age.value),
 			created: new Date()
 		});
 	}

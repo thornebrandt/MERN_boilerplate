@@ -26493,7 +26493,7 @@
 					'Dudes '
 				),
 				React.createElement('hr', null),
-				React.createElement(DudeFilter, { submitHandler: this.changeFilter }),
+				React.createElement(DudeFilter, { submitHandler: this.changeFilter, initFilter: this.props.location.query }),
 				React.createElement(DudeTable, { dudes: this.state.dudes }),
 				React.createElement('hr', null),
 				React.createElement(DudeAdd, { addDude: this.addDude })
@@ -26505,7 +26505,6 @@
 
 
 		componentDidUpdate: function componentDidUpdate(prevProps) {
-			console.log("did update");
 			if (prevProps.location.search == this.props.location.search) {
 				return;
 			} else {
@@ -41257,7 +41256,7 @@
 			this.props.addDude({
 				name: form.name.value,
 				saying: form.saying.value,
-				age: form.age.value,
+				age: parseInt(form.age.value),
 				created: new Date()
 			});
 		}
@@ -41316,7 +41315,7 @@
 					)
 				),
 				'Name: ',
-				React.createElement('input', { value: this.state.name, onChange: this.onChangeName }),
+				React.createElement('input', { name: 'name', value: this.state.name, onChange: this.onChangeName }),
 				React.createElement('br', null),
 				React.createElement(
 					'button',
@@ -41325,14 +41324,16 @@
 				)
 			);
 		},
-
-
 		getInitialState: function getInitialState() {
-			return { age: "", name: "" };
+			var initFilter = this.props.initFilter;
+			var state = {};
+			state.name = initFilter.name ? initFilter.name : '';
+			state.age = initFilter.age ? initFilter.age : '';
+			return state;
 		},
 
+
 		onChangeAge: function onChangeAge(e) {
-			console.log("change age");
 			this.setState({ age: e.target.value });
 		},
 

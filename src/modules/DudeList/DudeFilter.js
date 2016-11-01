@@ -14,7 +14,7 @@ let DudeFilter = React.createClass({
 					<option value="21">21</option>
 					<option value="35">35</option>
 				</select>
-				Name: <input value={this.state.name} onChange={this.onChangeName} >
+				Name: <input name="name" value={this.state.name} onChange={this.onChangeName} >
 				</input>
 				<br />
 				<button onClick={this.submit}>Apply</button>
@@ -22,12 +22,16 @@ let DudeFilter = React.createClass({
 		)
 	},
 
-	getInitialState: function(){
-		return { age: "", name: ""}
+	getInitialState(){
+		let initFilter = this.props.initFilter;
+		let state = {};
+		state.name = initFilter.name ? initFilter.name : '';
+		state.age = initFilter.age ? initFilter.age : '';
+		return state;
 	},
 
+
 	onChangeAge: function(e){
-		console.log("change age");
 		this.setState({ age: e.target.value});
 	},
 
