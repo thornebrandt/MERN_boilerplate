@@ -35,10 +35,6 @@ let DudeFilter = React.createClass({
 		this.setState({ name: e.target.value});
 	},
 
-	filterHandler: function(e){
-		this.props.submitHandler({age: 21 });
-	},
-
 	submit: function(e){
 		let newFilter = {};
 		if(this.state.age){

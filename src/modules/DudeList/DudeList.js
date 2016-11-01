@@ -1,7 +1,8 @@
 import 'whatwg-fetch';
-let React = require('react');
-let ReactDOM = require('react-dom');
-let moment = require('moment');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const moment = require('moment');
+const querystring = require('querystring')
 let DudeAdd = require('./DudeAdd');
 let DudeFilter = require('./DudeFilter');
 
@@ -77,7 +78,9 @@ let DudeList = React.createClass({
 	},
 
 	loadData: function(filter){
-		return fetch('/api/dudes', { data: filter })
+		let query = this.props.location.query;
+		let queryString = querystring.stringify(query);
+		return fetch('/api/dudes?' + queryString, { data: filter })
 		.then((response) => response.json())
 		.then((data) => {
 			this.setState({ dudes: data });
