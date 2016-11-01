@@ -6,7 +6,7 @@ let PostAdd= React.createClass({
 			<div>
 				<h3>Add Post</h3>
 				<form name="addPostForm">
-					<textarea name="content" placeholder="Post Content Here:" />
+					<textarea ref="content" name="content" placeholder="Post Content Here:" />
 					<button onClick={this.addPostHandler}>Add Post</button>
 				</form>
 			</div>
@@ -15,12 +15,13 @@ let PostAdd= React.createClass({
 
 	addPostHandler(e){
 		e.preventDefault();
-		let form = document.forms.addPostForm;
+		let content = this.refs.content;
 		this.props.addPost({
-			content: form.content.value,
+			content: content.value,
 			dude_id: this.props.dude._id,
 			created: new Date()
 		});
+		content.value = "";
 	}
 });
 

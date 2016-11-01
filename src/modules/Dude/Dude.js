@@ -5,6 +5,13 @@ const PostList = require('../Post/PostList');
 const PostAdd = require('../Post/PostAdd');
 
 let Dude = React.createClass({
+	getInitialState(){
+		return {
+			foundDude: false,
+			loaded: false
+		}
+	},
+
 	render(){
 		let dudeContent;
 		let foundDude = this.state.foundDude;
@@ -30,18 +37,11 @@ let Dude = React.createClass({
 		);
 	},
 
-	getInitialState(){
-		return {
-			loaded: false,
-			posts: []
-		}
-	},
-
 	componentDidMount(){
-		this.loadData();
+		this.loadDude();
 	},
 
-	loadData: function(){
+	loadDude(){
 		return fetch('/api/dudes/' + this.props.params.name)
 		.then((response) => response.json())
 		.then((data) => {
@@ -59,6 +59,32 @@ let Dude = React.createClass({
 		.catch((error) => {
 			console.log("can't find dude", error);
 		});
+	}
+});
+
+let FoundDude = React.createClass({
+	//also known as posts container
+
+	getInitialState(){
+		return {
+			dude: this.props.dude,
+			posts: [],
+		}
+	},
+
+	componentDidMount(){
+		this.loadPosts();
+	},
+
+	loadPosts(){
+		return fetch('/api/posts/' + this.props.dude._id)
+		.then((response) => response.json())
+		.then((data) => {
+			this.setState({ posts: data });
+		})
+		.catch((error) => {
+			console.log("error fetching posts: ", error);
+		});
 	},
 
 	addPost(post){
@@ -74,17 +100,16 @@ let Dude = React.createClass({
 			let post = data;
 			let postsModified = this.state.posts.concat(post);
 			let dude = this.state.dude;
-			dude.posts = postsModified;
-			this.setState({dude});
+			this.setState({
+				dude: dude,
+				posts: postsModified
+			});
 		})
 		.catch((error) => {
 			console.log("error posting ", error);
 		});
-	}
+	},
 
-});
-
-let FoundDude = React.createClass({
 	render(){
 		return(
 			<div>
@@ -93,9 +118,9 @@ let FoundDude = React.createClass({
 				<h2>{this.props.dude.saying}</h2>
 				<hr />
 				<h2>Posts:</h2>
-				<PostList dude={this.props.dude} />
+				<PostList dude={this.props.dude} posts={this.state.posts}/>
 				<hr />
-				<PostAdd dude={this.props.dude} addPost={this.props.addPost} />
+				<PostAdd dude={this.props.dude} posts={this.state.posts} addPost={this.addPost} />
 			</div>
 		);
 	}

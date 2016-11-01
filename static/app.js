@@ -41735,6 +41735,12 @@
 
 	var Dude = React.createClass({
 		displayName: 'Dude',
+		getInitialState: function getInitialState() {
+			return {
+				foundDude: false,
+				loaded: false
+			};
+		},
 		render: function render() {
 			var dudeContent = void 0;
 			var foundDude = this.state.foundDude;
@@ -41759,18 +41765,10 @@
 				dudeContent
 			);
 		},
-		getInitialState: function getInitialState() {
-			return {
-				loaded: false,
-				posts: []
-			};
-		},
 		componentDidMount: function componentDidMount() {
-			this.loadData();
+			this.loadDude();
 		},
-
-
-		loadData: function loadData() {
+		loadDude: function loadDude() {
 			var _this = this;
 
 			return fetch('/api/dudes/' + this.props.params.name).then(function (response) {
@@ -41789,10 +41787,36 @@
 			}).catch(function (error) {
 				console.log("can't find dude", error);
 			});
-		},
+		}
+	});
 
-		addPost: function addPost(post) {
+	var FoundDude = React.createClass({
+		displayName: 'FoundDude',
+
+		//also known as posts container
+
+		getInitialState: function getInitialState() {
+			return {
+				dude: this.props.dude,
+				posts: []
+			};
+		},
+		componentDidMount: function componentDidMount() {
+			this.loadPosts();
+		},
+		loadPosts: function loadPosts() {
 			var _this2 = this;
+
+			return fetch('/api/posts/' + this.props.dude._id).then(function (response) {
+				return response.json();
+			}).then(function (data) {
+				_this2.setState({ posts: data });
+			}).catch(function (error) {
+				console.log("error fetching posts: ", error);
+			});
+		},
+		addPost: function addPost(post) {
+			var _this3 = this;
 
 			return fetch('/api/posts', {
 				method: 'POST',
@@ -41805,18 +41829,16 @@
 				return response.json();
 			}).then(function (data) {
 				var post = data;
-				var postsModified = _this2.state.posts.concat(post);
-				var dude = _this2.state.dude;
-				dude.posts = postsModified;
-				_this2.setState({ dude: dude });
+				var postsModified = _this3.state.posts.concat(post);
+				var dude = _this3.state.dude;
+				_this3.setState({
+					dude: dude,
+					posts: postsModified
+				});
 			}).catch(function (error) {
 				console.log("error posting ", error);
 			});
-		}
-	});
-
-	var FoundDude = React.createClass({
-		displayName: 'FoundDude',
+		},
 		render: function render() {
 			return React.createElement(
 				'div',
@@ -41839,9 +41861,9 @@
 					null,
 					'Posts:'
 				),
-				React.createElement(PostList, { dude: this.props.dude }),
+				React.createElement(PostList, { dude: this.props.dude, posts: this.state.posts }),
 				React.createElement('hr', null),
-				React.createElement(PostAdd, { dude: this.props.dude, addPost: this.props.addPost })
+				React.createElement(PostAdd, { dude: this.props.dude, posts: this.state.posts, addPost: this.addPost })
 			);
 		}
 	});
@@ -41874,36 +41896,8 @@
 
 	var PostList = React.createClass({
 		displayName: 'PostList',
-		getInitialState: function getInitialState() {
-			return {
-				posts: []
-			};
-		},
-
-
-		componentDidUpdate: function componentDidUpdate() {
-			console.log("updated", this.props);
-		},
-
-		componentDidMount: function componentDidMount() {
-			this.loadPosts();
-		},
-
-
-		loadPosts: function loadPosts() {
-			var _this = this;
-
-			return fetch('/api/posts/' + this.props.dude._id).then(function (response) {
-				return response.json();
-			}).then(function (data) {
-				_this.setState({ posts: data });
-			}).catch(function (error) {
-				console.log("error fetching posts: ", error);
-			});
-		},
-
 		render: function render() {
-			var postRows = this.state.posts.map(function (post) {
+			var postRows = this.props.posts.map(function (post) {
 				post.created_formatted = new moment(post.created).fromNow();
 				return React.createElement(Post, { key: post._id, post: post });
 			});
@@ -41963,7 +41957,7 @@
 				React.createElement(
 					"form",
 					{ name: "addPostForm" },
-					React.createElement("textarea", { name: "content", placeholder: "Post Content Here:" }),
+					React.createElement("textarea", { ref: "content", name: "content", placeholder: "Post Content Here:" }),
 					React.createElement(
 						"button",
 						{ onClick: this.addPostHandler },
@@ -41974,12 +41968,13 @@
 		},
 		addPostHandler: function addPostHandler(e) {
 			e.preventDefault();
-			var form = document.forms.addPostForm;
+			var content = this.refs.content;
 			this.props.addPost({
-				content: form.content.value,
+				content: content.value,
 				dude_id: this.props.dude._id,
 				created: new Date()
 			});
+			content.value = "";
 		}
 	});
 
